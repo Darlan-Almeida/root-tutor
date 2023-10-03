@@ -8,21 +8,15 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "hjhjsdahhds"
 socketio = SocketIO(app)
 
+
 rooms = {}
 
-def generate_unique_code(length):
-    while True:
-        code = ""
-        for _ in range(length):
-            code += random.choice(ascii_uppercase)
-        
-        if code not in rooms:
-            break
-    
-    return code
 
 @app.route("/", methods=["POST", "GET"])
 def home():
+    room = 'versionamento321'
+    rooms[room] = {"members": 0, "messages": []}
+
     session.clear()
     if request.method == "POST":
         name = request.form.get("name")
@@ -35,12 +29,8 @@ def home():
 
         if join != False and not code:
             return render_template("home.html", error="Please enter a room code.", code=code, name=name)
-        
-        room = code
-        if create != False:
-            room = generate_unique_code(4)
-            rooms[room] = {"members": 0, "messages": []}
-        elif code not in rooms:
+
+        if code not in rooms:
             return render_template("home.html", error="Room does not exist.", code=code, name=name)
         
         session["room"] = room
@@ -99,6 +89,12 @@ def disconnect():
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
+
+
+#rota em que será implementada o passo a passo do tutorial
+@app.route("/tutor")
+def tutor():
+    return render_template("tutor.html")
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

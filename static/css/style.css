@@ -31,7 +31,7 @@
   height: 80vh;
   display: flex;
   flex-direction: column;
-  width: 80vw;
+  width: 100%;
   align-items: stretch;
 }
 
