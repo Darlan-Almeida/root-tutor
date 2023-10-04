@@ -1,4 +1,131 @@
-.content {
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Indie+Flower&family=Staatliches&display=swap");
+
+* {
+  font-family: Gowun Dodum, Roboto, Arial, sans-serif;
+}
+
+body {
+  background-image: url("/static/img/background.svg");
+  background-size: cover;
+  color: white;
+}
+
+/** TELA INICIAL **/
+.home {
+  text-align: center;
+}
+
+.home label {
+  display: block;
+}
+
+.home input {
+  background: none;
+  border-radius: 20px;
+  border: #6411ad 3px solid;
+  color: #000;
+  font-size: 1.7rem;
+  font-weight: bold;
+  max-width: calc(100% - 30px);
+  outline: none;
+  padding: 15px 30px;
+  text-align: center;
+  transition: 0.2s ease;
+  background: black;
+  color: white;
+/*  font-family: Staatliches;*/
+  display: block;
+  margin: auto;
+}
+
+.home input:focus {
+  box-shadow: rgba(100, 17, 173, 0.3) 0 0 0 5px;
+}
+
+.home input.code {
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border: #e76f51 2px solid;
+}
+
+.home .code-label {
+  margin-top: 15px;
+}
+
+.join {
+  --background-side: #007200;
+  --background: #008000;
+  --color: #fff;
+  background-color: var(--background);
+  border-bottom: rgba(255, 255, 255, 0.5) 3px solid;
+  border-left: none;
+  border-radius: 20px;
+  border-right: none;
+  border-top: none;
+  box-shadow: var(--background-side) 0 8px, #000000 0 8px 5px;
+  color: var(--color);
+  cursor: pointer;
+  font-family: "Gowun Dodum", Roboto, Arial, sans-serif;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  outline: none;
+  padding: 10px 30px;
+  transition: 0.2s ease;
+  width: 300px;
+}
+.join:hover {
+  box-shadow: var(--background-side) 0 8px, #000000 0 8px 10px;
+}
+.join:focus {
+  box-shadow: var(--background-side) 0 12px, #000000 0 8px 10px;
+  transform: translateY(-4px);
+}
+.join:active {
+  border-bottom: transparent 3px solid;
+  box-shadow: var(--color-side) 0 0, #000000 0 0 3px;
+  transform: translateY(8px);
+}
+
+.error {
+  color: #f4a261;
+  margin-top: 20px;
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 2rem;
+  }
+  75% {
+    margin-left: -2rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
+}
+
+
+/** SALA **/
+.room {
+  display: flex;
+  gap: 10px;
+}
+
+.room .slides {
+  flex: 1;
+}
+
+.room .message-box {
+  width: 300px;
+}
+
+
+/*.content {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,3 +194,4 @@ h2 {
   font-size: 10px;
   color: darkgray;
 }
+*/
