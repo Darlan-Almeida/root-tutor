@@ -9,15 +9,14 @@ app.config["SECRET_KEY"] = "hjhjsdahhds"
 socketio = SocketIO(app)
 
 
+roomID = 'versionamento321'
 rooms = {}
-
+rooms[roomID] = { "members": 0, "messages":[] }
 
 @app.route("/", methods=["POST", "GET"])
 def home():
-    room = 'versionamento321'
-    rooms[room] = {"members": 0, "messages": []}
+    global roomID
 
-    session.clear()
     if request.method == "POST":
         name = request.form.get("name")
         code = request.form.get("code")
@@ -25,15 +24,15 @@ def home():
         create = request.form.get("create", False)
 
         if not name:
-            return render_template("home.html", error="Please enter a name.", code=code, name=name)
+            return render_template("home.html", error="Por favor, digite seu nome", code=code, name=name)
 
         if join != False and not code:
-            return render_template("home.html", error="Please enter a room code.", code=code, name=name)
+            return render_template("home.html", error="Por favor, digite o código da sala", code=code, name=name)
 
         if code not in rooms:
-            return render_template("home.html", error="Room does not exist.", code=code, name=name)
-        
-        session["room"] = room
+            return render_template("home.html", error="Código da sala incorreto", code=code, name=name)
+
+        session["room"] = roomID
         session["name"] = name
         return redirect(url_for("room"))
 
@@ -59,7 +58,6 @@ def message(data):
     }
     send(content, to=room)
     rooms[room]["messages"].append(content)
-    print(f"{session.get('name')} said: {data['data']}")
 
 @socketio.on("connect")
 def connect(auth):
@@ -72,9 +70,8 @@ def connect(auth):
         return
     
     join_room(room)
-    send({"name": name, "message": "has entered the room"}, to=room)
+    send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
     rooms[room]["members"] += 1
-    print(f"{name} joined room {room}")
 
 @socketio.on("disconnect")
 def disconnect():
@@ -84,11 +81,10 @@ def disconnect():
 
     if room in rooms:
         rooms[room]["members"] -= 1
-        if rooms[room]["members"] <= 0:
-            del rooms[room]
+        # if rooms[room]["members"] <= 0:
+        #     del rooms[room]
     
-    send({"name": name, "message": "has left the room"}, to=room)
-    print(f"{name} has left the room {room}")
+    send({"name": name, "message": "🚪 Saiu da sala"}, to=room)
 
 
 #rota em que será implementada o passo a passo do tutorial
