@@ -30,10 +30,10 @@ def home():
 
         if code not in rooms:
             return render_template("home.html", error="Código da sala incorreto", code=code, name=name)
-        if name in users:
+        if name.lower() in users:
             return render_template("home.html", error="Esse nome de usuário já existe", code=code, name=name)
         
-        users.append(name)
+        users.append(name.lower())
         session["room"] = roomID
         session["name"] = name
 
