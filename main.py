@@ -9,13 +9,13 @@ socketio = SocketIO(app)
 
 roomID = 'versionamento321'
 rooms = {}
-rooms[roomID] = { "members": 0, "messages":[] }
+rooms[roomID] = { "members": 0, "messages":[], "users":[] }
 users = []
 
 @app.route("/", methods=["POST", "GET"])
 def home():
     global roomID
-    global users
+    users = rooms[roomID]["users"]
 
     if request.method == "POST":
         name = request.form.get("name")
