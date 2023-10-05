@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_socketio import join_room, leave_room, send, SocketIO
-import random
-from string import ascii_uppercase
 
 
 app = Flask(__name__)
@@ -12,28 +10,35 @@ socketio = SocketIO(app)
 roomID = 'versionamento321'
 rooms = {}
 rooms[roomID] = { "members": 0, "messages":[] }
+users = []
 
 @app.route("/", methods=["POST", "GET"])
 def home():
     global roomID
+    global users
 
     if request.method == "POST":
         name = request.form.get("name")
         code = request.form.get("code")
         join = request.form.get("join", False)
-        create = request.form.get("create", False)
+
 
         if not name:
             return render_template("home.html", error="Por favor, digite seu nome", code=code, name=name)
-
         if join != False and not code:
             return render_template("home.html", error="Por favor, digite o código da sala", code=code, name=name)
 
         if code not in rooms:
             return render_template("home.html", error="Código da sala incorreto", code=code, name=name)
-
+        if name in users:
+            return render_template("home.html", error="Esse nome de usuário já existe", code=code, name=name)
+        
+        users.append(name)
         session["room"] = roomID
         session["name"] = name
+
+        print(users)
+
         return redirect(url_for("room"))
 
     return render_template("home.html")
@@ -71,7 +76,7 @@ def connect(auth):
     
     join_room(room)
     send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
-    rooms[room]["members"] += 1
+    #rooms[room]["members"] += 1
 
 @socketio.on("disconnect")
 def disconnect():
