@@ -9,19 +9,24 @@ socketio = SocketIO(app)
 
 roomID = 'versionamento321'
 rooms = {}
-rooms[roomID] = { "members": 0, "messages":[], "users":[] }
-users = []
+rooms[roomID] = { "members": 0, "messages":[], "users":[], "doneTodos": {} }
+
+todos = [
+    { "id": "instalar-git", "name": "Instalar Git" },
+    { "id": "clonar-repo", "name": "Clonar repositório" }
+]
 
 @app.route("/", methods=["POST", "GET"])
 def home():
     global roomID
+
     users = rooms[roomID]["users"]
+    doneTodos = rooms[roomID]["doneTodos"]
 
     if request.method == "POST":
         name = request.form.get("name")
         code = request.form.get("code")
         join = request.form.get("join", False)
-
 
         if not name:
             return render_template("home.html", error="Por favor, digite seu nome", code=code, name=name)
@@ -34,10 +39,10 @@ def home():
             return render_template("home.html", error="Esse nome de usuário já existe", code=code, name=name)
         
         users.append(name.lower())
+        doneTodos[name] = []
+
         session["room"] = roomID
         session["name"] = name
-
-        print(users)
 
         return redirect(url_for("room"))
 
@@ -45,11 +50,54 @@ def home():
 
 @app.route("/room")
 def room():
+    global roomID
+    global todos
     room = session.get("room")
-    if room is None or session.get("name") is None or room not in rooms:
+    name = session.get('name')
+
+    if room is None or session.get("name") is None or room not in rooms or name not in rooms[roomID]["doneTodos"]:
         return redirect(url_for("home"))
 
-    return render_template("room.html", code=room, messages=rooms[room]["messages"])
+    doneTodos = rooms[roomID]["doneTodos"][name]
+
+    return render_template("room.html", code=room, messages=rooms[room]["messages"], todos=todos, doneTodos=doneTodos)
+
+@app.route('/check/<todoID>')
+def check(todoID):
+    # TODO: verificar se há nome
+    # TODO: validar Todo concluída
+    # TODO: evitar Todos concluídas repetidas
+
+    global roomID
+    global todos
+    name = session.get('name')
+    room = session.get("room")
+
+    doneTodos = rooms[roomID]["doneTodos"][name]
+    doneTodos.append(todoID)
+
+    todo = next(todo for todo in todos if todo["id"] == todoID)
+    content = {
+        "name": session.get("name"),
+        "message": f'✔ Concluiu a tarefa "{todo["name"]}"'
+    }
+    socketio.emit('message',content, to=room,namespace='/')
+
+    return 'OK'
+
+@app.route('/uncheck/<todoID>')
+def uncheck(todoID):
+    # TODO: verificar se há nome
+    # TODO: validar Todo concluída
+    # TODO: evitar Todos concluídas repetidas
+
+    global roomID
+    name = session.get('name')
+
+    doneTodos = rooms[roomID]["doneTodos"][name]
+    if todoID in doneTodos:
+        doneTodos.remove(todoID)
+    return 'OK'
 
 @socketio.on("message")
 def message(data):

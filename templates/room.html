@@ -1,9 +1,9 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="room">
-  <div class="tutor">
+  <!-- <div class="tutor">
     <a href="/tutor">Acesse o Tutorial</a>
-  </div>
+  </div> -->
   <div class="slides">
     <iframe
       src="https://docs.google.com/presentation/d/e/2PACX-1vRu0X1K3XW6DmfQEFwDXoquYK_zzq1EEUXtkeLyX5cUb1_yX1EdcKPH2Wo4BEwX2B_saYVAdpA8MwrE/embed?start=false&loop=false&delayms=3000"
@@ -14,6 +14,16 @@
       mozallowfullscreen="true"
       webkitallowfullscreen="true"
     ></iframe>
+
+    <div class="todos">
+      <h2>TAREFAS</h2>
+      {% for todo in todos %}
+      <button class="todo {% if todo.id in doneTodos %}done{% endif %}" data-id="{{todo.id}}">
+        <div class="todo-icon"></div>
+        <div class="todo-name">{{todo.name}}</div>
+      </button>
+      {% endfor %}
+    </div>
   </div>
   <div class="message-box">
     <h2>CHAT DO CURSO</h2>
