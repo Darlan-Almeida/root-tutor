@@ -2,21 +2,23 @@
 
 <div class="room">
   <div class="slides">
-   <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRu0X1K3XW6DmfQEFwDXoquYK_zzq1EEUXtkeLyX5cUb1_yX1EdcKPH2Wo4BEwX2B_saYVAdpA8MwrE/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+    <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRu0X1K3XW6DmfQEFwDXoquYK_zzq1EEUXtkeLyX5cUb1_yX1EdcKPH2Wo4BEwX2B_saYVAdpA8MwrE/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
   </div>
   <div class="message-box">
-    <h2>Chat Room: {{code}}</h2>
+    <h2>CHAT DO CURSO</h2>
     <div class="messages" id="messages"></div>
     <div class="inputs">
       <input
+        autofocus
         type="text"
         rows="3"
-        placeholder="Message"
+        placeholder="Digite sua mensagem..."
         name="message"
+        class="message"
         id="message"
       />
-      <button type="button" name="send" id="send-btn" onClick="sendMessage()">
-        Send
+      <button type="button" class="send" name="send" id="send-btn" onClick="sendMessage()">
+        <img src="https://cdn-icons-png.flaticon.com/512/60/60525.png" alt="Enviar">
       </button>
     </div>
   </div>
@@ -24,31 +26,41 @@
     var socketio = io();
 
     const messages = document.getElementById("messages");
+    const message = document.getElementById("message");
 
     const createMessage = (name, msg) => {
       const content = `
-      <div class="text">
-          <span>
-              <strong>${name}</strong>: ${msg}
-          </span>
-          <span class="muted">
+      <div class="message-content">
+          <strong class="name">${name}</strong>
+          <div class="msg">${msg}</div>
+          <div class="time">
               ${new Date().toLocaleString()}
-          </span>
+          </div>
       </div>
       `;
       messages.innerHTML += content;
+      scrollBottom();
     };
+
+    const scrollBottom = () => {
+      messages.scrollTo({ left: 0, top: messages.scrollHeight, behavior: "smooth" })
+    }
 
     socketio.on("message", (data) => {
       createMessage(data.name, data.message);
     });
 
+    message.addEventListener("keyup", (e) => {
+      if (e.key === 'Enter') sendMessage()
+    })
+
     const sendMessage = () => {
-      const message = document.getElementById("message");
       if (message.value == "") return;
       socketio.emit("message", { data: message.value });
       message.value = "";
     };
+
+    document.addEventListener('load', scrollBottom)
   </script>
   {% for msg in messages %}
   <script type="text/javascript">

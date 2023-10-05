@@ -1,14 +1,20 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Indie+Flower&family=Staatliches&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap');
 
 * {
-  font-family: Gowun Dodum, Roboto, Arial, sans-serif;
+  font-family: Raleway, Roboto, Arial, sans-serif;
 }
 
 body {
   background-image: url("/static/img/background.svg");
   background-size: cover;
   color: white;
+}
+
+.content {
+  max-width: 81rem;
+  margin: 30px auto;
 }
 
 /** TELA INICIAL **/
@@ -111,17 +117,128 @@ body {
 
 
 /** SALA **/
+
+iframe {
+  background: black;
+  border-radius: 20px;
+}
+
 .room {
   display: flex;
   gap: 10px;
+  align-items: center;
+  flex-direction: row;
+}
+
+@media (max-width: 48em) {
+  .room {
+    flex-direction: column !important;
+  }
+
+  iframe {
+    height: 300px;
+  }
+
+  .message-box {
+    width: calc(100% - 50px) !important;
+  }
 }
 
 .room .slides {
   flex: 1;
+  width: 100%;
 }
 
 .room .message-box {
   width: 300px;
+  border: white 1px solid;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  background: #222;
+}
+
+.room .message-box h2 {
+  margin: 0;
+  border-bottom: white 1px solid;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.room .message-box .messages {
+  flex: 1;
+  overflow: auto;
+  padding: 10px 0;
+}
+
+.room .message-box .inputs {
+  display: flex;
+  margin-top:10px;
+  gap: 5px;
+}
+
+.room .message-box .inputs .message {
+  background: none;
+  border-radius: 5px;
+  border: white 1px solid;
+  color: #000;
+  font-size: 1rem;
+  font-weight: bold;
+  flex: 1;
+  outline: none;
+  padding: 5px 10px;
+  transition: 0.2s ease;
+  color: white;
+/*  font-family: Staatliches;*/
+  display: block;
+  margin: auto;
+}
+
+.room .message-box .inputs .message:focus {
+  box-shadow: rgba(100, 100, 100, 0.3) 0 0 0 5px;
+}
+
+.room .message-box .inputs .send {
+  background: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .1s ease;
+}
+
+.room .message-box .inputs .send:hover,
+.room .message-box .inputs .send:focus {
+  transform: scale(1.05);
+}
+
+.room .message-box .inputs .send:active {
+  transform: scale(0.95);
+}
+
+.room .message-box .inputs .send img {
+  width: 20px;
+  height: 20px;
+}
+
+.room .message-box .message-content {
+  margin: 10px 0;
+  padding-right: 10px;
+}
+
+.room .message-box .message-content .name {
+  font-size: 14px;
+}
+
+.room .message-box .message-content .time {
+  font-size: 10px;
+  text-align: right;
+  opacity:0.5;
 }
 
 
