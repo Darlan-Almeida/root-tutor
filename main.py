@@ -78,7 +78,6 @@ def check(todoID):
 
 
     name = session.get('name')
-    room = session.get("room")
 
     doneTodos = rooms[roomID]["doneTodos"][name]
     doneTodos.append(todoID)
@@ -104,6 +103,24 @@ def uncheck(todoID):
     if todoID in doneTodos:
         doneTodos.remove(todoID)
     return 'OK'
+
+@app.route('/dashboard')
+def dashboard():
+
+    global roomID
+    global todos
+
+    users_for_todos = {}
+    for todo in todos:
+        todo_id = todo["id"]
+        if todo_id not in users_for_todos:
+            users_for_todos[todo_id] = []
+        users_for_todos[todo_id].extend(todo["users"])
+    
+    return users_for_todos
+    
+
+
 
 @socketio.on("message")
 def message(data):
