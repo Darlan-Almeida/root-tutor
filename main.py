@@ -12,9 +12,11 @@ rooms = {}
 rooms[roomID] = { "members": 0, "messages":[], "users":[], "doneTodos": {} }
 
 todos = [
-    { "id": "instalar-git", "name": "Instalar Git" },
-    { "id": "clonar-repo", "name": "Clonar repositório" }
+    { "id": "instalar-git", "name": "Instalar Git" , "users": [] , "users_finished" : 0},
+    { "id": "clonar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 }
 ]
+
+
 
 @app.route("/", methods=["POST", "GET"])
 def home():
@@ -60,6 +62,8 @@ def room():
 
     doneTodos = rooms[roomID]["doneTodos"][name]
 
+    print(doneTodos)
+
     return render_template("room.html", code=room, messages=rooms[room]["messages"], todos=todos, doneTodos=doneTodos)
 
 @app.route('/check/<todoID>')
@@ -68,21 +72,23 @@ def check(todoID):
     # TODO: validar Todo concluída
     # TODO: evitar Todos concluídas repetidas
 
+
     global roomID
     global todos
+
+
     name = session.get('name')
     room = session.get("room")
 
     doneTodos = rooms[roomID]["doneTodos"][name]
     doneTodos.append(todoID)
 
-    todo = next(todo for todo in todos if todo["id"] == todoID)
-    content = {
-        "name": session.get("name"),
-        "message": f'✔ Concluiu a tarefa "{todo["name"]}"'
-    }
-    socketio.emit('message',content, to=room,namespace='/')
-
+    for todo in todos:
+        if todo["id"] == todoID:
+            todo["users"].append(name)
+            todo["users_finished"] += 1
+            print(todo["users"])
+            break 
     return 'OK'
 
 @app.route('/uncheck/<todoID>')
