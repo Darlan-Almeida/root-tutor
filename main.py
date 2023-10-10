@@ -110,13 +110,14 @@ def uncheck(todoID):
         doneTodos.remove(todoID)
     return 'OK'
 
-@app.route('/dashboard')
-def dashboard():
+@app.route('/dashboard/<room_id>')
+def dashboard(room_id):
 
-    global roomID
-    global todos
-
-    return render_template("dashboard.html" , todos=todos) 
+    if room_id in rooms:
+        global todos
+        return render_template("dashboard.html" , todos=todos)
+    else:
+        return render_template("error.html") 
 
 @socketio.on("message")
 def message(data):
