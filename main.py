@@ -87,7 +87,13 @@ def check(todoID):
             todo["users"].append(name)
             todo["users_finished"] += 1
             print(todo["users"])
-            break 
+            break
+
+    content = {
+        "name": session.get("name"),
+        "message": f'✔ Concluiu a tarefa "{todo["name"]}"'
+    }
+    socketio.emit('message',content, to=dashboard,namespace='/')
     return 'OK'
 
 @app.route('/uncheck/<todoID>')
@@ -116,11 +122,8 @@ def dashboard():
         if todo_id not in users_for_todos:
             users_for_todos[todo_id] = []
         users_for_todos[todo_id].extend(todo["users"])
-    
-    return users_for_todos
-    
 
-
+    return render_template("dashboard.html") 
 
 @socketio.on("message")
 def message(data):
