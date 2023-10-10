@@ -116,14 +116,7 @@ def dashboard():
     global roomID
     global todos
 
-    users_for_todos = {}
-    for todo in todos:
-        todo_id = todo["id"]
-        if todo_id not in users_for_todos:
-            users_for_todos[todo_id] = []
-        users_for_todos[todo_id].extend(todo["users"])
-
-    return render_template("dashboard.html") 
+    return render_template("dashboard.html" , todos=todos) 
 
 @socketio.on("message")
 def message(data):

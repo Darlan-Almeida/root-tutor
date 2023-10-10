@@ -1,9 +1,22 @@
-{% extends 'base.html' %} {% block content %}
-<div> 
-    <script src="/static/js/room.js"></script>
-    {% for msg in messages %}
-    <script type="text/javascript">
-      createMessage('{{msg.name}}', '{{msg.message}}')
-    </script>
-    {% endfor %} {% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <table>
+        <tr>
+            <th>Nome da Tarefa</th>
+            <th>Usuários</th>
+        </tr>
+        {% for todo in todos %}
+            <tr>
+                <td>{{ todo.name }}</td>
+                <td>
+                    {% for user in todo.users %}
+                        {{ user }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 </div>
+{% endblock %}
+
