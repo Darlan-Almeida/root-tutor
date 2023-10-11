@@ -52,13 +52,21 @@ for (const $todo of $todos) {
   $todo.addEventListener('click', checkTodo)
 }
 
-function checkTodo(e) {
+async function checkTodo(e) {
   const id = e.target.dataset.id
-  let url = '/check/' + id
-  if (e.target.classList.contains('done')) {
-    url = '/uncheck/' + id
-  }
-  e.target.classList.toggle('done')
+  if (e.target.classList.contains('done')) return
 
-  fetch(url)
+  const result = await Swal.fire({
+    title: 'Concluir tarefa',
+    text: 'Tem certeza que quer concluir a tarefa?\nNão será possível desfazer depois!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim',
+    cancelButtonText: 'Não'
+  })
+
+  if (!result.isConfirmed) return
+
+  e.target.classList.add('done')
+  fetch('/check/' + id)
 }

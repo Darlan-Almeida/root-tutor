@@ -96,19 +96,19 @@ def check(todoID):
     socketio.emit('message',content, to=dashboard,namespace='/')
     return 'OK'
 
-@app.route('/uncheck/<todoID>')
-def uncheck(todoID):
-    # TODO: verificar se há nome
-    # TODO: validar Todo concluída
-    # TODO: evitar Todos concluídas repetidas
+# @app.route('/uncheck/<todoID>')
+# def uncheck(todoID):
+#     # TODO: verificar se há nome
+#     # TODO: validar Todo concluída
+#     # TODO: evitar Todos concluídas repetidas
 
-    global roomID
-    name = session.get('name')
+#     global roomID
+#     name = session.get('name')
 
-    doneTodos = rooms[roomID]["doneTodos"][name]
-    if todoID in doneTodos:
-        doneTodos.remove(todoID)
-    return 'OK'
+#     doneTodos = rooms[roomID]["doneTodos"][name]
+#     if todoID in doneTodos:
+#         doneTodos.remove(todoID)
+#     return 'OK'
 
 @app.route('/dashboard/<room_id>')
 def dashboard(room_id):
