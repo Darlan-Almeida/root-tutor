@@ -283,6 +283,10 @@ iframe {
   border-radius: 50%;
 }
 
+.room .todos .todo.done {
+  pointer-events: none;
+}
+
 .room .todos .todo.done .todo-icon {
   background-image: url('https://cdn-icons-png.flaticon.com/512/60/60731.png') !important;
   background-color: #06d6a0 !important;

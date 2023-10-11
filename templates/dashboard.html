@@ -1,22 +1,25 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div>
-    <table>
-        <tr>
-            <th>Nome da Tarefa</th>
-            <th>Usuários</th>
-        </tr>
-        {% for todo in todos %}
-            <tr>
-                <td>{{ todo.name }}</td>
-                <td>
-                    {% for user in todo.users %}
-                        {{ user }}<br>
-                    {% endfor %}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome da Tarefa</th>
+        <th>Usuários</th>
+      </tr>
+    </thead>
+    <tbody class="dashboard-todos">
+      {% for todo in todos %}
+      <tr>
+        <td>{{ todo.name }}</td>
+        <td>
+          {% for user in todo.users %} {{ user }}<br />
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-{% endblock %}
 
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}
