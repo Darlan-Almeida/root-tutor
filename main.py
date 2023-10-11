@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from flask_socketio import join_room, leave_room, send, SocketIO
+from flask_socketio import join_room, leave_room, send, SocketIO, emit
 
 
 app = Flask(__name__)
@@ -89,11 +89,12 @@ def check(todoID):
             print(todo["users"])
             break
 
+    todo = next(todo for todo in todos if todo["id"] == todoID)
     content = {
         "name": session.get("name"),
-        "message": f'✔ Concluiu a tarefa "{todo["name"]}"'
+        "todo": todo['id']
     }
-    socketio.emit('message',content, to=dashboard,namespace='/')
+    socketio.emit('user-done-todo', content, namespace=f'/dashboard')
     return 'OK'
 
 # @app.route('/uncheck/<todoID>')
@@ -145,6 +146,12 @@ def connect(auth):
     join_room(room)
     send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
     #rooms[room]["members"] += 1
+
+@socketio.on("connect", namespace="/dashboard")
+def connect(auth):
+    global todos
+    print("Administrador conectado")
+    emit('state', todos)
 
 @socketio.on("disconnect")
 def disconnect():
