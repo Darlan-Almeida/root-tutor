@@ -7,19 +7,11 @@
         <th>Usuários</th>
       </tr>
     </thead>
-    <tbody class="dashboard-todos">
-      {% for todo in todos %}
-      <tr>
-        <td>{{ todo.name }}</td>
-        <td>
-          {% for user in todo.users %} {{ user }}<br />
-          {% endfor %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
+    <tbody class="dashboard-todos"></tbody>
   </table>
 </div>
+<div class="graph"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/static/js/dashboard.js"></script>
 {% endblock %}

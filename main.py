@@ -13,7 +13,8 @@ rooms[roomID] = { "members": 0, "messages":[], "users":[], "doneTodos": {} }
 
 todos = [
     { "id": "instalar-git", "name": "Instalar Git" , "users": [] , "users_finished" : 0},
-    { "id": "clonar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 }
+    { "id": "clonar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 },
+    {"id": "comitar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 }
 ]
 
 
@@ -68,9 +69,6 @@ def room():
 
 @app.route('/check/<todoID>')
 def check(todoID):
-    # TODO: verificar se há nome
-    # TODO: validar Todo concluída
-    # TODO: evitar Todos concluídas repetidas
 
 
     global roomID
@@ -92,28 +90,14 @@ def check(todoID):
     todo = next(todo for todo in todos if todo["id"] == todoID)
     content = {
         "name": session.get("name"),
-        "todo": todo['id']
+        "todo": todo['id'],
+        "users_finished": todo["users_finished"]
     }
     socketio.emit('user-done-todo', content, namespace=f'/dashboard')
     return 'OK'
 
-# @app.route('/uncheck/<todoID>')
-# def uncheck(todoID):
-#     # TODO: verificar se há nome
-#     # TODO: validar Todo concluída
-#     # TODO: evitar Todos concluídas repetidas
-
-#     global roomID
-#     name = session.get('name')
-
-#     doneTodos = rooms[roomID]["doneTodos"][name]
-#     if todoID in doneTodos:
-#         doneTodos.remove(todoID)
-#     return 'OK'
-
 @app.route('/dashboard/<room_id>')
 def dashboard(room_id):
-
     if room_id in rooms:
         global todos
         return render_template("dashboard.html" , todos=todos)
