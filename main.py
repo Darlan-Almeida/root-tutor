@@ -12,8 +12,8 @@ rooms = {}
 rooms[roomID] = { "members": 0, "messages":[], "users":[], "doneTodos": {} }
 
 todos = [
-    { "id": "instalar-git", "name": "Instalar Git" , "users": [] , "users_finished" : 0 , "users_not_finished" : 0},
-    { "id": "clonar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 , "users_not_finished" : 0}
+    { "id": "instalar-git", "name": "Instalar Git" , "users": [] , "users_finished" : 0 , "users_not_finished" : 0, "users_name_not_finished": []},
+    { "id": "clonar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 , "users_not_finished" : 0 , "users_name_not_finished": []}
 ]
 
 
@@ -38,6 +38,9 @@ def home():
             return render_template("home.html", error="Código da sala incorreto", code=code, name=name)
         if name.lower() in users:
             return render_template("home.html", error="Esse nome de usuário já existe", code=code, name=name)
+        
+        for todo in todos:
+            todo["users_name_not_finished"].append(name.lower())
         
         users.append(name.lower())
         doneTodos[name] = []
@@ -91,6 +94,7 @@ def check(todoID):
     for todo in todos:
         if todo["id"] == todoID:
             todo["users"].append(name)
+            todo[ "users_name_not_finished"].remove(name)
             todo["users_finished"] += 1
             todo["users_not_finished"] -= 1
             print(todo["users_not_finished"])
