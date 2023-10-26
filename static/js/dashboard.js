@@ -23,7 +23,11 @@ function generateDashboardTable() {
     const $row = document.createElement('tr')
     const $name = document.createElement('td')
     const $users = document.createElement('td')
+    const $users_finished = document.createElement('td')
+    const $users_not_finished = document.createElement('td')
     $name.innerText = todo.name
+    $users_finished.innerText = todo.users_finished
+    $users_not_finished.innerText = todo.users_not_finished
     for (const user of todo.users) {
       const $name = document.createElement('div')
       $name.innerText = user
@@ -31,6 +35,8 @@ function generateDashboardTable() {
     }
     $row.appendChild($name)
     $row.appendChild($users)
+    $row.appendChild($users_finished)
+    $row.appendChild($users_not_finished)
     $dashboardTodos.appendChild($row)
   }
 }

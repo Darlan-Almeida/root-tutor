@@ -12,10 +12,9 @@ rooms = {}
 rooms[roomID] = { "members": 0, "messages":[], "users":[], "doneTodos": {} }
 
 todos = [
-    { "id": "instalar-git", "name": "Instalar Git" , "users": [] , "users_finished" : 0},
-    { "id": "clonar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 }
+    { "id": "instalar-git", "name": "Instalar Git" , "users": [] , "users_finished" : 0 , "users_not_finished" : 0},
+    { "id": "clonar-repo", "name": "Clonar repositório", "users": [] , "users_finished" : 0 , "users_not_finished" : 0}
 ]
-
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -62,7 +61,9 @@ def room():
 
     doneTodos = rooms[roomID]["doneTodos"][name]
 
-    print(doneTodos)
+    for todo in todos:
+        todo["users_not_finished"] += 1
+
 
     return render_template("room.html", code=room, messages=rooms[room]["messages"], todos=todos, doneTodos=doneTodos)
 
@@ -75,9 +76,12 @@ def check(todoID):
 
     global roomID
     global todos
-
+    global rooms
+    global room
 
     name = session.get('name')
+    room = session.get("room")
+    members = rooms[room]["members"]
 
     doneTodos = rooms[roomID]["doneTodos"][name]
     doneTodos.append(todoID)
@@ -86,30 +90,21 @@ def check(todoID):
         if todo["id"] == todoID:
             todo["users"].append(name)
             todo["users_finished"] += 1
-            print(todo["users"])
+            todo["users_not_finished"] -= 1
+            print(todo["users_not_finished"])
             break
 
     todo = next(todo for todo in todos if todo["id"] == todoID)
     content = {
         "name": session.get("name"),
-        "todo": todo['id']
+        "todo": todo['id'],
     }
     socketio.emit('user-done-todo', content, namespace=f'/dashboard')
+
+
+
     return 'OK'
 
-# @app.route('/uncheck/<todoID>')
-# def uncheck(todoID):
-#     # TODO: verificar se há nome
-#     # TODO: validar Todo concluída
-#     # TODO: evitar Todos concluídas repetidas
-
-#     global roomID
-#     name = session.get('name')
-
-#     doneTodos = rooms[roomID]["doneTodos"][name]
-#     if todoID in doneTodos:
-#         doneTodos.remove(todoID)
-#     return 'OK'
 
 @app.route('/dashboard/<room_id>')
 def dashboard(room_id):
@@ -145,12 +140,11 @@ def connect(auth):
     
     join_room(room)
     send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
-    #rooms[room]["members"] += 1
+    rooms[room]["members"] += 1
 
 @socketio.on("connect", namespace="/dashboard")
 def connect(auth):
     global todos
-    print("Administrador conectado")
     emit('state', todos)
 
 @socketio.on("disconnect")
@@ -167,10 +161,7 @@ def disconnect():
     send({"name": name, "message": "🚪 Saiu da sala"}, to=room)
 
 
-#rota em que será implementada o passo a passo do tutorial
-@app.route("/tutor")
-def tutor():
-    return render_template("tutor.html")
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
