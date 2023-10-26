@@ -101,7 +101,7 @@ def check(todoID):
         "name": session.get("name"),
         "todo": todo['id'],
     }
-    socketio.emit('user-done-todo', content, namespace=f'/dashboard')
+    socketio.emit('user-done-todo', todos, namespace=f'/dashboard')
 
 
 
