@@ -64,6 +64,8 @@ def room():
     for todo in todos:
         todo["users_not_finished"] += 1
 
+    socketio.emit('user-doing-todo', todos, namespace=f'/dashboard')
+
 
     return render_template("room.html", code=room, messages=rooms[room]["messages"], todos=todos, doneTodos=doneTodos)
 
