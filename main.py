@@ -58,6 +58,7 @@ def room():
     global todos
     room = session.get("room")
     name = session.get('name')
+    messages = rooms[room]["messages"]
 
     if room is None or session.get("name") is None or room not in rooms or name not in rooms[roomID]["doneTodos"]:
         return redirect(url_for("home"))
@@ -124,6 +125,9 @@ def dashboard(room_id):
 @socketio.on("message")
 def message(data):
     room = session.get("room")
+    messages = rooms[room]["messages"]
+    
+
     if room not in rooms:
         return 
     
@@ -132,7 +136,18 @@ def message(data):
         "message": data["data"]
     }
     send(content, to=room)
-    rooms[room]["messages"].append(content)
+    messages.append(content)
+
+    last_user = messages[-1]["name"]
+    last_message = messages[-1]["message"]
+    
+    if(last_user == "administrator" and last_message[0:9] == "HELPE AI:"):
+        content = {
+        "name": "Eisten IA",
+        "message": "Resposta da IA"
+    }
+        send(content, to=room)
+        messages.append(content)
 
 @socketio.on("connect")
 def connect(auth):
@@ -161,9 +176,7 @@ def disconnect():
 
     if room in rooms:
         rooms[room]["members"] -= 1
-        # if rooms[room]["members"] <= 0:
-        #     del rooms[room]
-    
+
     send({"name": name, "message": "🚪 Saiu da sala"}, to=room)
 
 
