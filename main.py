@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_socketio import join_room, leave_room, send, SocketIO, emit
-from connect.chatgpt_connect import ChatGPTConnection
+from connect.chatgpt_connect import ChatGPTConnect
 
 
 app = Flask(__name__)
@@ -142,10 +142,13 @@ def message(data):
     last_user = messages[-1]["name"]
     last_message = messages[-1]["message"]
     
-    if(last_user == "administrator" and last_message[0:9] == "HELP AI:"):
+    if(last_user == "administrator" and last_message[0:8] == "HELP AI:"):
+        connect_ia = ChatGPTConnect()
+        response = connect_ia.response_message(last_message[8::])
+
         content = {
         "name": "Eisten IA",
-        "message": "Resposta da IA"
+        "message": response
     }
         send(content, to=room)
         messages.append(content)
