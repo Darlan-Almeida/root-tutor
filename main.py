@@ -10,7 +10,7 @@ socketio = SocketIO(app)
 
 roomID = 'versionamento321'
 rooms = {}
-rooms[roomID] = { "members": 0, "messages":[], "users":[], "doneTodos": {} }
+rooms[roomID] = { "members": 0, "messages":[], "users":[], "doneTodos": {}, "currentSlide": 1 }
 
 todos = [
     { "id": "instalar-git", "name": "Instalar Git" , "users": [] , "users_finished" : 0 , "users_not_finished" : 0, "users_name_not_finished": []},
@@ -153,6 +153,11 @@ def message(data):
         send(content, to=room)
         messages.append(content)
 
+@socketio.on('set-slide', '/dashboard')
+def set_slide(slide_no):
+    rooms[roomID]['currentSlide'] = slide_no
+    socketio.emit('set-slide', slide_no)
+
 @socketio.on("connect")
 def connect(auth):
     room = session.get("room")
@@ -165,12 +170,14 @@ def connect(auth):
     
     join_room(room)
     send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
+    socketio.emit('set-slide', rooms[roomID]['currentSlide'])
     rooms[room]["members"] += 1
 
 @socketio.on("connect", namespace="/dashboard")
 def connect(auth):
     global todos
     emit('state', todos)
+    socketio.emit('set-slide', rooms[roomID]['currentSlide'], namespace=f'/dashboard')
 
 @socketio.on("disconnect")
 def disconnect():

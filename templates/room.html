@@ -5,7 +5,7 @@
     <a href="/tutor">Acesse o Tutorial</a>
   </div> -->
   <div class="slides">
-    <iframe
+    <!-- <iframe
       src="https://docs.google.com/presentation/d/e/2PACX-1vRu0X1K3XW6DmfQEFwDXoquYK_zzq1EEUXtkeLyX5cUb1_yX1EdcKPH2Wo4BEwX2B_saYVAdpA8MwrE/embed?start=false&loop=false&delayms=3000"
       frameborder="0"
       width="100%"
@@ -13,7 +13,11 @@
       allowfullscreen="true"
       mozallowfullscreen="true"
       webkitallowfullscreen="true"
-    ></iframe>
+    ></iframe> -->
+    <canvas id="slides-canvas" width="1280" height="720"></canvas>
+    <div>
+      <span>Slide: <span id="page_num"></span> / <span id="page_count"></span></span>
+    </div>
 
     <div class="todos">
       <h2>TAREFAS</h2>
@@ -49,5 +53,10 @@
   <script type="text/javascript">
     createMessage('{{msg.name}}', '{{msg.message}}')
   </script>
-  {% endfor %} {% endblock %}
+  {% endfor %}
 </div>
+
+<script src="//mozilla.github.io/pdf.js/build/pdf.mjs" type="module"></script>
+<script type="module" src="/static/js/slides.js"></script>
+
+{% endblock %}
