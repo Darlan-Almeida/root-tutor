@@ -1,5 +1,16 @@
 {% extends 'base.html' %} {% block content %}
 <div>
+  <div style="margin: auto; max-width: 600px;">
+    <canvas id="slides-canvas" width="1280" height="720"></canvas>
+    <div style="text-align: center">
+      <button onclick="firstSlide()">⇤</button>
+      <button onclick="prevSlide()">🡐</button>
+      <span id="page_num"></span> / <span id="page_count"></span>
+      <button onclick="nextSlide()">🡒</button>
+      <button onclick="lastSlide()">⇥</button>
+    </div>
+  </div>
+
   <table>
     <thead>
       <tr>
@@ -17,4 +28,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/static/js/dashboard.js"></script>
+<script src="//mozilla.github.io/pdf.js/build/pdf.mjs" type="module"></script>
+<script type="module" src="/static/js/slides.js"></script>
 {% endblock %}

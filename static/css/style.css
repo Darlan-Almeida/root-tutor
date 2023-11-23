@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap');
 
 * {
@@ -7,7 +7,7 @@
 }
 
 body {
-  background-image: url("/static/img/background.svg");
+  background-image: url('/static/img/background.svg');
   background-size: cover;
   color: white;
 }
@@ -40,7 +40,7 @@ body {
   transition: 0.2s ease;
   background: black;
   color: white;
-/*  font-family: Staatliches;*/
+  /*  font-family: Staatliches;*/
   display: block;
   margin: auto;
 }
@@ -73,7 +73,7 @@ body {
   box-shadow: var(--background-side) 0 8px, #000000 0 8px 5px;
   color: var(--color);
   cursor: pointer;
-  font-family: "Gowun Dodum", Roboto, Arial, sans-serif;
+  font-family: 'Gowun Dodum', Roboto, Arial, sans-serif;
   font-size: 1.5rem;
   margin-top: 20px;
   outline: none;
@@ -115,28 +115,25 @@ body {
   }
 }
 
-
 /** SALA **/
 
-iframe {
+#slides-canvas {
   background: black;
   border-radius: 20px;
+  aspect-ratio: 16 / 9 !important;
+  width: 100%;
 }
 
 .room {
   display: flex;
   gap: 10px;
-/*  align-items: center;*/
+  /*  align-items: center;*/
   flex-direction: row;
 }
 
 @media (max-width: 48em) {
   .room {
     flex-direction: column !important;
-  }
-
-  iframe {
-    height: 300px;
   }
 
   .message-box {
@@ -175,7 +172,7 @@ iframe {
 
 .room .message-box .inputs {
   display: flex;
-  margin-top:10px;
+  margin-top: 10px;
   gap: 5px;
 }
 
@@ -191,7 +188,7 @@ iframe {
   padding: 5px 10px;
   transition: 0.2s ease;
   color: white;
-/*  font-family: Staatliches;*/
+  /*  font-family: Staatliches;*/
   display: block;
   margin: auto;
   height: 20px;
@@ -210,7 +207,7 @@ iframe {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: .1s ease;
+  transition: 0.1s ease;
 }
 
 .room .message-box .inputs .send:hover,
@@ -239,7 +236,7 @@ iframe {
 .room .message-box .message-content .time {
   font-size: 10px;
   text-align: right;
-  opacity:0.5;
+  opacity: 0.5;
 }
 
 .room .todos h2 {
@@ -294,10 +291,14 @@ iframe {
 }
 
 /* tabela dashboard */
-table, th, td {
-  border:10px solid black;
+table,
+th,
+td {
+  border: 2px solid black;
   border-color: black;
   background-color: white;
   color: black;
-
+  padding: 3px;
+  font-size: 18px;
+  border-collapse: collapse;
 }
