@@ -22,7 +22,7 @@
     <div class="todos">
       <h2>TAREFAS</h2>
       {% for todo in todos %}
-      <button class="todo {% if todo.id in doneTodos %}done{% endif %}" data-id="{{todo.id}}">
+      <button class="todo {% if todo.id in done_todos %}done{% endif %}" data-id="{{todo.id}}">
         <div class="todo-icon"></div>
         <div class="todo-name">{{todo.name}}</div>
       </button>

@@ -15,10 +15,18 @@ function generateDashboardTable(todos) {
     var $users_not_finished = document.createElement('td')
     var $users_name_not_finished = document.createElement('td')
     $name.innerText = todo.name
-    $users_name_finished.innerText = todo.users_name_finished
+    for (const user of todo.users_name_finished) {
+      const $div = document.createElement('div')
+      $div.innerText = user
+      $users_name_finished.appendChild($div)
+    }
     $users_finished.innerText = todo.users_finished
     $users_not_finished.innerText = todo.users_not_finished
-    $users_name_not_finished.innerText = todo.users_name_not_finished
+    for (const user of todo.users_name_not_finished) {
+      const $div = document.createElement('div')
+      $div.innerText = user
+      $users_name_not_finished.appendChild($div)
+    }
 
     $row.appendChild($name)
     $row.appendChild($users_name_finished)
