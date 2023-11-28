@@ -273,4 +273,4 @@ def set_slide(slide_no):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True, host='0.0.0.0')
