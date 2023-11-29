@@ -197,7 +197,7 @@ def connect():
     join_room(room)
 
     # Envia uma mensagem para todos informando que o usuário entrou na sala
-    send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
+    # send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
 
     # Envia a informação do slide atual
     socketio.emit("set-slide", rooms[room]["current_slide"])
@@ -220,7 +220,7 @@ def disconnect():
         rooms[room]["members"] -= 1
 
     # Envia uma mensagem para todos informando que o usuário saiu da sala
-    send({"name": name, "message": "🚪 Saiu da sala"}, to=room)
+    # send({"name": name, "message": "🚪 Saiu da sala"}, to=room)
 
 
 # Quando o usuário enviar uma mensagem
