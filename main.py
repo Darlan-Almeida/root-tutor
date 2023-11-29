@@ -24,7 +24,10 @@ rooms[roomID] = {
 # Tarefas
 todos = [
     {"id": "instalar-git", "name": "Instalar Git"},
-    {"id": "clonar-repo", "name": "Clonar repositório"},
+    {"id": "criar-conta", "name": "Criar conta no GitHub"},
+    {"id": "pesquisar-repos", "name": "Pesquisar repositórios"},
+    {"id": "fork-repos", "name": "Fazer o fork do repositório"},
+    {"id": "edit-repo", "name": "Personalizar repositório"},
 ]
 
 # Cria os parâmetros das tarefas
