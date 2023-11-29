@@ -54,7 +54,6 @@ function queueRenderPage(num) {
   }
 }
 
-
 function setPage(num) {
   pageNum = num
   queueRenderPage(num)
@@ -75,7 +74,43 @@ pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
   renderPage(pageNum)
 })
 
+// Tela cheia
+$slides.addEventListener('dblclick', () => toggleFullScreen())
+document.addEventListener('fullscreenchange', () => toggleFullScreen(true))
+function toggleFullScreen(invert = false) {
+  if (invert) {
+    document.fullscreen ? enterFullscreen() : exitFullscreen()
+  } else {
+    !document.fullscreen ? enterFullscreen() : exitFullscreen()
+  }
+}
+
+function enterFullscreen() {
+  $slides.requestFullscreen()
+  $slides.classList.add('fullscreen')
+}
+
+function exitFullscreen() {
+  document.exitFullscreen()
+  $slides.classList.remove('fullscreen')
+}
+
+// Passar slides com teclado
+document.addEventListener('keyup', slideKey)
+function slideKey(e) {
+  const KEYS = {
+    ArrowRight: () => nextSlide(),
+    ArrowLeft: () => prevSlide(),
+    Home: () => firstSlide(),
+    End: () => lastSlide(),
+    f: () => toggleFullScreen(),
+    F: () => toggleFullScreen()
+  }
+  KEYS[e.key]?.()
+}
+
 // Socket
 socketio.on('set-slide', (slideNum) => {
   setPage(slideNum)
+  currentSlide = slideNum
 })
