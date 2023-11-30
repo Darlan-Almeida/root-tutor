@@ -24,7 +24,10 @@ rooms[roomID] = {
 # Tarefas
 todos = [
     {"id": "instalar-git", "name": "Instalar Git"},
-    {"id": "clonar-repo", "name": "Clonar repositório"},
+    {"id": "criar-conta", "name": "Criar conta no GitHub"},
+    {"id": "pesquisar-repos", "name": "Pesquisar repositórios"},
+    {"id": "fork-repos", "name": "Fazer o fork do repositório"},
+    {"id": "edit-repo", "name": "Personalizar repositório"},
 ]
 
 # Cria os parâmetros das tarefas
@@ -194,7 +197,7 @@ def connect():
     join_room(room)
 
     # Envia uma mensagem para todos informando que o usuário entrou na sala
-    send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
+    # send({"name": name, "message": "🚪 Entrou na sala"}, to=room)
 
     # Envia a informação do slide atual
     socketio.emit("set-slide", rooms[room]["current_slide"])
@@ -217,7 +220,7 @@ def disconnect():
         rooms[room]["members"] -= 1
 
     # Envia uma mensagem para todos informando que o usuário saiu da sala
-    send({"name": name, "message": "🚪 Saiu da sala"}, to=room)
+    # send({"name": name, "message": "🚪 Saiu da sala"}, to=room)
 
 
 # Quando o usuário enviar uma mensagem
@@ -273,4 +276,4 @@ def set_slide(slide_no):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True, host='0.0.0.0')
