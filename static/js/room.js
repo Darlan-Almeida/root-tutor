@@ -53,8 +53,10 @@ for (const $todo of $todos) {
 }
 
 async function checkTodo(e) {
-  const id = e.target.dataset.id
-  if (e.target.classList.contains('done')) return
+  const target = e.currentTarget || e.target
+  const id = target.dataset.id
+  if (!id) return
+  if (target.classList.contains('done')) return
 
   const result = await Swal.fire({
     title: 'Concluir tarefa',
@@ -67,6 +69,6 @@ async function checkTodo(e) {
 
   if (!result.isConfirmed) return
 
-  e.target.classList.add('done')
+  target.classList.add('done')
   fetch('/check/' + id)
 }
