@@ -2,6 +2,7 @@ var socketio = io()
 
 const messages = document.getElementById('messages')
 const message = document.getElementById('message')
+const logout = document.getElementById('logout-btn')
 
 const createMessage = (name, msg) => {
   const content = `
