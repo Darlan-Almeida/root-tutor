@@ -14,7 +14,6 @@ pip install -r requirements.txt
 python main.py
 ```
 
-
 # Tecnologias utilizadas
 - ``Flask``
 - ``Python``
@@ -23,7 +22,6 @@ python main.py
 - ``CSS``
 - ``Websocket``
 - ``OpenAi API ``
-
 
 
 # Tela de entrar na sala :
